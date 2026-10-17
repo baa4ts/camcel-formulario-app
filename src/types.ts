@@ -1,4 +1,4 @@
-/** Shared domain types for the evaluation form and its local persistence. */
+/** Shared domain types for CAMCEL evaluation forms. */
 export interface EvaluationInfo {
   name: string;
   employee: string;
@@ -16,14 +16,6 @@ export type Score = '1' | '2' | '3' | '4' | '5';
 /** Row keys are intentionally stable: `${sectionIndex}-${rowIndex}`. */
 export type ScoreKey = `${number}-${number}`;
 export type Scores = Partial<Record<ScoreKey, Score>>;
-
-export interface SavedEvaluation {
-  id: string;
-  info: EvaluationInfo;
-  scores: Scores;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export interface EvaluationSection {
   title: string;
@@ -45,21 +37,17 @@ export interface ScoreSummary {
   final: number | null;
 }
 
+/** Only the current draft is kept, never a list of completed evaluations. */
 export interface EvaluationStoreState {
   info: EvaluationInfo;
   scores: Scores;
-  saved: SavedEvaluation[];
-  activeId: string | null;
   draftChanged: boolean;
   updateField: (key: EvaluationInfoKey, value: string) => void;
   updateScore: (key: ScoreKey, value: Score | '') => void;
   newEvaluation: () => void;
-  saveEvaluation: () => string;
-  loadEvaluation: (id: string) => boolean;
-  deleteEvaluation: (id: string) => void;
 }
 
 export type PersistedEvaluationState = Pick<
   EvaluationStoreState,
-  'info' | 'scores' | 'saved' | 'activeId' | 'draftChanged'
+  'info' | 'scores' | 'draftChanged'
 >;

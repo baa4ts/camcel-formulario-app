@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { Link } from 'react-router';
 import Header from '../components/Header';
 import ValidationNotice from '../components/ValidationNotice';
-import SavedEvaluationsModal from '../components/SavedEvaluationsModal';
 import DraftToolbar from '../components/DraftToolbar';
 import PdfPreview from '../components/PdfPreview';
 import { AllDesktopRatings, ConceptFields, FinalScore, GeneralInfo } from '../components/EvaluationForm';
@@ -11,11 +9,10 @@ import { useCurrentForm } from '../formContext';
 
 export default function PcPage() {
   const form = useCurrentForm();
-  const [historyOpen, setHistoryOpen] = useState(false);
   const { preview, status, loading, generate, closePreview } = usePdfActions();
 
   return <div className="app pc-page">
-    <Header onHistory={() => setHistoryOpen(true)} />
+    <Header />
     {preview ? <PdfPreview
       bytes={preview}
       formTitle={`${form.code} · ${form.name}`}
@@ -32,7 +29,7 @@ export default function PcPage() {
           </div>
           <Link to="/" className="panel-home-link">← Volver al Home</Link>
         </div>
-        <DraftToolbar onHistory={() => setHistoryOpen(true)} />
+        <DraftToolbar />
         <ValidationNotice />
         <GeneralInfo />
         <AllDesktopRatings />
@@ -47,9 +44,8 @@ export default function PcPage() {
           </button>
         </div>
         {status && <p role="status" className={status.startsWith('Error:') ? 'status error' : 'status'}>{status}</p>}
-        <p className="hint bottom-note">Se genera localmente. Si guardás el PDF en Windows, también se añade la evaluación al historial y volvés al inicio.</p>
+        <p className="hint bottom-note">El PDF se genera y guarda localmente. No se almacena un historial de evaluaciones.</p>
       </div>
     </main>}
-    {historyOpen && <SavedEvaluationsModal onClose={() => setHistoryOpen(false)} />}
   </div>;
 }

@@ -91,8 +91,3 @@ export function useActiveEvaluationStore<T>(selector:(state:EvaluationStoreState
   const licensed=useLicensedEvaluationStore(selector);
   return id==='fo-en-02'?licensed:auxiliary;
 }
-export function useSavedCounts(){
-  const auxiliary=useEvaluationStore(s=>s.saved.length);
-  const licensed=useLicensedEvaluationStore(s=>s.saved.length);
-  return {auxiliary,licensed};
-}
