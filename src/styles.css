@@ -1,0 +1,100 @@
+/* CAMCEL: interfaz exclusivamente de escritorio.
+   El tamaño mínimo REAL de la ventana se fija también en src-tauri/tauri.conf.json. */
+html, body, #root { min-width: 1100px; min-height: 100%; }
+*{box-sizing:border-box}body{margin:0;background:#f0f3f6;color:#1b2937;font:14px Arial,Helvetica,sans-serif}.topbar{display:flex;align-items:center;gap:24px;padding:13px 25px;background:white;border-bottom:1px solid #d7dfe5}.topbar img{height:51px;width:120px;object-fit:contain;background:white}.topbar h1{font-size:22px;margin:0 0 5px}.topbar p{margin:0;color:#63717e}.workspace{display:grid;grid-template-columns:minmax(420px,575px) minmax(430px,1fr);gap:18px;padding:18px;align-items:start}.form-panel{background:white;border:1px solid #dce2e8;border-radius:9px;overflow:hidden;box-shadow:0 3px 12px #18324c0b}.panel-heading{padding:19px 21px;background:#214e73;color:white}.panel-heading h2{margin:0 0 6px;font-size:19px}.panel-heading p{margin:0;font-size:13px;color:#d9e8f4}.form-section{padding:16px 21px;border-bottom:1px solid #e1e6ec}.form-section h3{margin:0 0 15px;font-size:14px;color:#234f75}.form-section label{display:flex;flex-direction:column;gap:6px;margin:10px 0;font-weight:600;font-size:13px}.form-section input, .form-section textarea, .form-section select{width:100%;padding:10px;border:1px solid #c8d1d9;border-radius:5px;background:white;color:#273a49;font:inherit;font-weight:400}.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fields-row label{min-width:0}.hint{color:#697886;font-size:12px;line-height:1.4;margin:8px 0}.section-head{display:flex;gap:8px;align-items:center;justify-content:space-between}.section-head h3{margin:0}.section-head span{font-size:12px;color:#52687d;white-space:nowrap}.form-section .score-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #edf0f3;padding:5px 0;margin:0;font-weight:normal}.score-row span{flex:1;line-height:1.4}.form-section .score-row select{width:130px;min-width:130px;padding:8px}.result{margin:18px 21px 10px;background:#e7f0f8;border:1px solid #b7ccdd;padding:14px;display:flex;justify-content:space-between;align-items:center;border-radius:6px;color:#214f72}.result strong{font-size:20px}.actions{display:flex;gap:10px;padding:10px 21px}.actions button{border:1px solid #285675;background:white;color:#285675;border-radius:6px;padding:11px 12px;font-weight:700;cursor:pointer;flex:1}.actions .primary{background:#255678;color:white}.actions button:disabled{opacity:.5;cursor:wait}.status{padding:0 21px;color:#234f75;font-size:13px}.form-panel>.hint{padding:0 21px 15px}.preview{background:white;border:1px solid #dce2e8;border-radius:9px;overflow:hidden;position:sticky;top:16px;height:calc(100vh - 130px);min-height:600px}
+
+.status.error{color:#ac2626;font-weight:600}
+
+/* Shared navigation, saved-history sheet and draft actions */
+:root{--camcel-blue:#245275;--ink:#203244;--muted:#617486;--border:#d9e1e8;--shadow:0 8px 28px #15395714}
+button, input, select, textarea{font-family:inherit}button{cursor:pointer}
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{outline:3px solid #efb900;outline-offset:2px}
+.topbar-heading{min-width:0;flex:1}
+
+.history-top{border:1px solid #b6cbd9;background:#fff;color:#285675;border-radius:7px;padding:9px 11px;font-weight:700;white-space:nowrap}.history-top span{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:20px;background:#e7f0f8;margin-left:4px}
+.draft-tools{padding:13px 21px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#f8fafc;border-bottom:1px solid var(--border)}
+.draft-state{display:flex;flex-direction:column;gap:4px;min-width:155px}.draft-state strong{font-size:13px;color:#234e70}.draft-state span{font-size:11px;color:#667889;line-height:1.4}
+.draft-buttons{display:flex;gap:7px;flex-wrap:wrap}.draft-buttons button, .saved-buttons button, .saved-footer button{padding:9px 12px;border:1px solid #c0cfdb;border-radius:6px;color:#245275;background:white;font-size:12px;font-weight:700}
+.draft-buttons .primary, .saved-buttons .primary{background:#255678;color:white;border-color:#255678}
+.draft-message{width:100%;font-size:12px;margin:0;color:#245275}
+.bottom-note{padding:0 21px 15px}
+.modal-backdrop{position:fixed;inset:0;background:#1023369c;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}
+.saved-modal{width:min(710px,100%);max-height:min(85vh,850px);background:white;border-radius:12px;box-shadow:0 18px 60px #06192a55;display:flex;flex-direction:column;overflow:hidden}
+.saved-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:22px 24px 12px}.saved-modal-head h2{color:#214f71;font-size:20px;margin:0 0 7px}.saved-modal-head p{font-size:13px;margin:0;color:#687988;line-height:1.45}
+.close-modal{border:0;background:#eef3f6;border-radius:9px;width:38px;height:38px;font-size:19px;flex-shrink:0;color:#38576e}
+.saved-search{padding:7px 24px 17px}.saved-search input{width:100%;font-size:15px;padding:12px;border-radius:8px;border:1px solid #c7d4df}
+.saved-list{overflow-y:auto;padding:0 24px;min-height:100px}.saved-item{display:flex;justify-content:space-between;gap:12px;align-items:center;border-top:1px solid #e5ebf0;padding:14px 0}.saved-item.current{background:#f8fbfe}
+.saved-description{display:flex;flex-direction:column;gap:5px;min-width:0}.saved-description strong{color:#244a69;font-size:15px;overflow-wrap:anywhere}.saved-description small{color:#14815d;font-size:11px}.saved-description span{font-size:12px;color:#667787;line-height:1.3}.saved-buttons{display:flex;gap:7px}.saved-buttons .danger-text{color:#9d3232;border-color:#ead6d6}.empty-history{text-align:center;padding:34px 15px;color:#637588;line-height:1.6}
+.saved-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 24px;background:#f7f9fb;border-top:1px solid #e4ebef}.saved-footer span{color:#6a7a88;font-size:12px}
+
+
+.form-section .score-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  padding:13px 0;
+  border-bottom:1px solid #e7edf1;
+}
+.score-details{flex:1;min-width:0}
+.criterion-title{display:block;font-size:13px;line-height:1.45;color:#204761}
+.criterion-description{font-size:12px;line-height:1.5;color:#536779;margin:5px 0 0;white-space:normal;overflow-wrap:break-word}
+.form-section .score-row select{flex-shrink:0;width:125px;min-width:125px;margin-top:2px}
+.criterion-rubric{width:min(100%,420px);margin-top:10px;border:1px solid #d6e2eb;border-radius:7px;overflow:hidden;color:#445b6d;font-size:11px}
+.rubric-headers, .rubric-line{display:grid;grid-template-columns:minmax(0,1fr) 85px;align-items:center;gap:10px;padding:6px 9px}
+.rubric-headers{background:#e8f1f7;color:#245275;font-weight:700}
+.rubric-line+.rubric-line{border-top:1px solid #e7edf1}
+.rubric-line>strong{text-align:center;color:#245275}
+.rubric-headers>span:last-child{text-align:center}
+
+
+
+
+
+
+
+
+/* Navegación desde las páginas de evaluación hacia el inicio. */
+.brand-link{display:inline-flex;flex-shrink:0}.brand-link img{display:block}
+.home-top-link{color:#245275;text-decoration:none;font-weight:700;white-space:nowrap;font-size:13px;padding:8px 9px;border-radius:7px}
+.home-top-link:hover{background:#e9f1f7}
+
+/* Validación de campos obligatorios, igual para FO-EN-01 y FO-EN-02. */
+.required-key{font-weight:500;font-size:11px;color:#a84b2e;margin-left:6px}
+.validation-notice{margin:12px 21px;padding:12px 14px;background:#fff5f2;border:1px solid #e8b5a8;border-radius:7px;color:#8b2d20;font-size:13px;line-height:1.4}
+.validation-notice strong{display:block;font-size:14px}
+.validation-notice p{margin:5px 0 0}
+.field-error{font-size:12px;color:#ad2929;font-weight:600;line-height:1.35}
+.form-section input[aria-invalid="true"], .form-section textarea[aria-invalid="true"], .form-section select[aria-invalid="true"]{border-color:#ca4444;background:#fff8f7;box-shadow:0 0 0 1px #d9585826}
+.score-invalid{background:#fff9f7;border-left:3px solid #ca4444;padding-left:9px!important}
+
+
+.section-incomplete .accordion-right em{background:#fff0ea;color:#9e4736}
+
+
+
+/* Tauri: formulario completo, sin columna lateral para el PDF. */
+.workspace.workspace-single{display:block;max-width:960px;margin:0 auto;padding:18px}
+.workspace.workspace-single .form-panel{width:100%;max-width:none}
+
+
+
+
+.camcel-header{gap:18px;flex-wrap:wrap;box-shadow:0 1px 5px #15334c09}
+.camcel-header .topbar-heading{flex:1;min-width:220px}
+.camcel-header .topbar-heading h1{font-size:19px}
+.camcel-menu{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.camcel-menu .menu-link{display:inline-flex;align-items:center;min-height:38px;text-decoration:none;color:#315875;padding:9px 12px;border-radius:7px;font-weight:700;font-size:13px}
+.camcel-menu .menu-link:hover, .camcel-menu .menu-link.active{background:#eaf2f7;color:#194865}
+.header-home-button{display:inline-flex;align-items:center;justify-content:center;min-height:41px;background:#245678;color:white;text-decoration:none;border-radius:8px;font-size:13px;font-weight:700;padding:10px 15px;white-space:nowrap}
+.header-home-button:hover{background:#184565}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.panel-heading>div{min-width:0}
+.panel-home-link{color:white;text-decoration:none;font-weight:700;border:1px solid #c4d8e9;padding:9px 12px;border-radius:7px;white-space:nowrap;font-size:12px}
+.panel-home-link:hover{background:#ffffff20}
+.pc-page .workspace.workspace-single{max-width:1000px;padding:20px}
+
+
+
+/* El menú principal permanece horizontal en la ventana de escritorio. */
+.camcel-header { flex-wrap: nowrap; }

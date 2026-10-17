@@ -1,0 +1,16 @@
+.pdf-preview-screen{min-height:calc(100vh - 85px);padding:18px max(16px,calc((100vw - 1170px)/2));background:#e9eef3;color:#1c3040}
+.pdf-preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;background:white;padding:18px 22px;border-radius:11px;border:1px solid #d9e2e8}
+.pdf-preview-toolbar-copy h2{font-size:20px;margin:0 0 6px;color:#214e73}.pdf-preview-toolbar-copy p{font-size:12px;color:#6b7d88;margin:0}
+.pdf-preview-toolbar-actions{display:flex;gap:10px;flex-wrap:wrap}.pdf-preview-toolbar-actions button{padding:11px 15px;border:1px solid #255678;border-radius:7px;background:white;color:#255678;font-size:13px;font-weight:700;cursor:pointer}
+.pdf-preview-toolbar-actions button.primary{background:#255678;color:white}.pdf-preview-toolbar-actions button:disabled{opacity:.5;cursor:wait}
+.pdf-preview-status{padding:12px 16px;margin:12px 0;background:#f8fffc;color:#1d674c;border-radius:8px;overflow-wrap:anywhere}.pdf-preview-status.error, .pdf-preview-error{padding:12px;background:#fff0ee;color:#9a2e27;border-radius:8px}
+.pdf-preview-controls{display:flex;align-items:center;justify-content:space-between;max-width:900px;margin:16px auto 10px;color:#516577;font-size:13px;font-weight:600}
+.pdf-preview-controls>div{display:flex;align-items:center;gap:14px;background:#fff;border-radius:7px;padding:3px 7px}
+.pdf-preview-controls button{min-width:32px;min-height:32px;border:0;background:#edf4f8;color:#285a76;border-radius:5px;font-size:19px;cursor:pointer}.pdf-preview-controls button:disabled{opacity:.35}
+.pdf-preview-controls output{min-width:44px;text-align:center}
+.pdf-preview-document{display:flex;flex-direction:column;gap:24px;align-items:center;padding:8px 0 34px}
+.pdf-preview-page{width:100%;display:flex;flex-direction:column;align-items:center;gap:7px}
+.pdf-preview-page-label{font-size:12px;color:#5b6c78}.pdf-preview-page-scroll{max-width:100%;overflow:auto;box-shadow:0 4px 18px #142c4224;border-radius:3px}
+.pdf-preview-page canvas{display:block;background:white}
+.pdf-preview-wait{text-align:center;padding:60px 0}
+

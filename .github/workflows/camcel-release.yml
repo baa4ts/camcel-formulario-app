@@ -1,0 +1,66 @@
+# .github/workflows/camcel-release.yml
+
+    steps:
+      - name: Obtener el codigo
+        uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+
+      - name: Dependencias de Tauri para Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libgtk-3-dev \
+            libssl-dev \
+            libfuse2 \
+            patchelf \
+            xdg-utils
+
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ startsWith(matrix.sistema, 'macos-') && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Cache de Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Instalar dependencias del frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Firma local ad-hoc en macOS
+        if: runner.os == 'macOS'
+        run: echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
+
+      - name: Compilar y publicar instaladores
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPIMAGE_EXTRACT_AND_RUN: '1'
+        with:
+          tagName: camcel-v__VERSION__
+          releaseName: 'CAMCEL Formularios v__VERSION__'
+          releaseBody: |
+            Descargas de CAMCEL Formularios:
+            - Windows: MSI o instalador EXE (NSIS).
+            - Linux: DEB o AppImage.
+            - macOS: DMG (Apple Silicon o Intel).
+
+            Nota: los instaladores no estan firmados con certificados comerciales.
+          releaseDraft: false
+          prerelease: false
+          args: ${{ matrix.argumentos }}
