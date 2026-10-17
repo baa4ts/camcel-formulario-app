@@ -1,7 +1,35 @@
 # .github/workflows/camcel-release.yml
+name: CAMCEL - Compilar y publicar
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    name: ${{ matrix.plataforma }} / ${{ matrix.descripcion }}
+    runs-on: ${{ matrix.plataforma }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - plataforma: windows-latest
+            descripcion: Windows
+            argumentos: --bundles msi,nsis
+          - plataforma: ubuntu-22.04
+            descripcion: Linux
+            argumentos: --bundles deb,appimage
+          - plataforma: macos-latest
+            descripcion: macOS Apple Silicon
+            argumentos: --target aarch64-apple-darwin --bundles dmg
+          - plataforma: macos-latest
+            descripcion: macOS Intel
+            argumentos: --target x86_64-apple-darwin --bundles dmg
 
     steps:
-      - name: Obtener el codigo
+      - name: Descargar codigo
         uses: actions/checkout@v4
 
       - name: Instalar pnpm
@@ -15,7 +43,17 @@
           node-version: '22'
           cache: pnpm
 
-      - name: Dependencias de Tauri para Linux
+      - name: Instalar Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Cache de Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Dependencias de Linux
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
@@ -23,44 +61,23 @@
             libwebkit2gtk-4.1-dev \
             libayatana-appindicator3-dev \
             librsvg2-dev \
-            libgtk-3-dev \
-            libssl-dev \
-            libfuse2 \
             patchelf \
+            libfuse2 \
             xdg-utils
-
-      - name: Instalar Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: ${{ startsWith(matrix.sistema, 'macos-') && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
-
-      - name: Cache de Rust
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: './src-tauri -> target'
 
       - name: Instalar dependencias del frontend
         run: pnpm install --frozen-lockfile
 
-      - name: Firma local ad-hoc en macOS
-        if: runner.os == 'macOS'
-        run: echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
-
-      - name: Compilar y publicar instaladores
+      - name: Compilar y subir instaladores a Releases
         uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPIMAGE_EXTRACT_AND_RUN: '1'
         with:
           tagName: camcel-v__VERSION__
-          releaseName: 'CAMCEL Formularios v__VERSION__'
+          releaseName: CAMCEL Formularios v__VERSION__
           releaseBody: |
-            Descargas de CAMCEL Formularios:
-            - Windows: MSI o instalador EXE (NSIS).
-            - Linux: DEB o AppImage.
-            - macOS: DMG (Apple Silicon o Intel).
-
-            Nota: los instaladores no estan firmados con certificados comerciales.
+            Instaladores de CAMCEL Formularios para Windows, Linux y macOS.
+            Los paquetes no estan firmados con certificados comerciales.
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.argumentos }}
